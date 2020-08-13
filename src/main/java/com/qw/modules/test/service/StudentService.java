@@ -24,4 +24,8 @@ public interface StudentService {
     Student getStudentByStudentId(int studentId);
 
     Page<Student> getStudentBySearchVo(SearchVo searchVo);
+
+    List<Student> getStudentByStudentName(String studentName);
+
+    List<Student> getStudentByStudentNameLike(String studentName);
 }

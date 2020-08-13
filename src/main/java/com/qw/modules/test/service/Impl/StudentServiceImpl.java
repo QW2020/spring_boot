@@ -12,7 +12,9 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -80,4 +82,21 @@ public class StudentServiceImpl implements StudentService {
         Example<Student> example = Example.of(student,matcher);
         return studentRepository.findAll(example,pageable);
     }
+
+    //通过name查询
+    @Override
+    public List<Student> getStudentByStudentName(String studentName) {
+        return Optional.ofNullable(studentRepository.findByStudentName(studentName)).orElse(Collections.emptyList());
+    }
+
+    //通过name进行模糊查询
+    @Override
+    public List<Student> getStudentByStudentNameLike(String studentName) {
+        return Optional
+                .ofNullable(studentRepository.findByStudentNameLike(
+                        String.format("%s%S%s","%",studentName,"%")))
+                .orElse(Collections.emptyList());
+//        return Optional.ofNullable(studentRepository.findTop2ByStudentNameLike(String.format("%s%s%s","%",studentName,"%"))).orElse(Collections.emptyList());
+    }
+
 }

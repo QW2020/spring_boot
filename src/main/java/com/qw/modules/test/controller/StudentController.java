@@ -62,4 +62,23 @@ public class StudentController {
     public Page<Student> getStudentBySearchVo(@RequestBody SearchVo searchVo){
         return studentService.getStudentBySearchVo(searchVo);
     }
+
+    /**
+     * 127.0.0.1/api/studentName?studentName=qw1  ----  get
+     * 通过name属性查询单个
+     */
+    @GetMapping("/studentName")
+    public List<Student> getStudentByStudentName(@RequestParam String studentName){
+        return studentService.getStudentByStudentName(studentName);
+    }
+
+    /**
+     * 127.0.0.1/api/getStudentByStudentNameLike?studentName=qw  ----  get
+     * 通过name属性模糊查询
+     */
+    @GetMapping("/getStudentByStudentNameLike")
+    public List<Student> getStudentByStudentNameLike(@RequestParam String studentName){
+        return studentService.getStudentByStudentNameLike(studentName);
+    }
+
 }
