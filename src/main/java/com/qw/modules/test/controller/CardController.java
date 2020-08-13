@@ -27,6 +27,7 @@ public class CardController {
     /**
      * 127.0.0.1/api/card  ----  post
      * {"cardNo":"aaaaa"}
+     * 新增
      */
     @PostMapping(value = "/card",consumes = "application/json")
     public Result<Card> insertCard(@RequestBody Card card){

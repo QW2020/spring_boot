@@ -1,7 +1,11 @@
 package com.qw.modules.test.service;
 
 import com.qw.modules.common.vo.Result;
+import com.qw.modules.common.vo.SearchVo;
 import com.qw.modules.test.pojo.Student;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 /**
  * ClassName: StudentService <br/>
@@ -14,4 +18,10 @@ import com.qw.modules.test.pojo.Student;
 public interface StudentService {
 
     Result<Student> insertStudent(Student student);
+
+    List<Student> getStudents();
+
+    Student getStudentByStudentId(int studentId);
+
+    Page<Student> getStudentBySearchVo(SearchVo searchVo);
 }
