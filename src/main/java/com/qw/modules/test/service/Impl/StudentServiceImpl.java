@@ -94,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getStudentByStudentNameLike(String studentName) {
         return Optional
                 .ofNullable(studentRepository.findByStudentNameLike(
-                        String.format("%s%S%s","%",studentName,"%")))
+                        String.format("%s%s%s","%",studentName,"%")))
                 .orElse(Collections.emptyList());
 //        return Optional.ofNullable(studentRepository.findTop2ByStudentNameLike(String.format("%s%s%s","%",studentName,"%"))).orElse(Collections.emptyList());
     }
