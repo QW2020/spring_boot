@@ -2,6 +2,7 @@ package com.qw.modules.test.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qw.aspect.ServiceAnnotation;
 import com.qw.modules.common.vo.Result;
 import com.qw.modules.common.vo.SearchVo;
 import com.qw.modules.test.dao.CityDao;
@@ -32,6 +33,8 @@ public class CityServiceImpl implements CityService {
 
     //根据id查询
     @Override
+    //测试自定义注解
+    @ServiceAnnotation(value = "bbb")
     public List<City> getCitiesByCountryId(int countryId) {
 //        return cityDao.getCitiesByCountryId(countryId);
         return Optional.ofNullable(cityDao.getCitiesByCountryId(countryId))
@@ -70,7 +73,7 @@ public class CityServiceImpl implements CityService {
     @Transactional(noRollbackFor = ArithmeticException.class)
     public Result<City> updateCity(City city) {
         cityDao.updateCity(city);
-        int i = 1/0;
+//        int i = 1/0;
         return new Result<City>(Result.ResultStatus.SUCCESS.status,"Update success.",city);
     }
 

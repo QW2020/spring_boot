@@ -81,4 +81,12 @@ public class StudentController {
         return studentService.getStudentByStudentNameLike(studentName);
     }
 
+    /**
+     * 127.0.0.1/api/getStudentsByParams?studentName=qw1&cardId=1  ----  get
+     * @Query注解精准查询
+     */
+    @GetMapping("/getStudentsByParams")
+    public List<Student> getStudentsByParams(@RequestParam String studentName,@RequestParam(required = false,defaultValue = "0") Integer cardId){
+        return studentService.getStudentsByParams(studentName,cardId);
+    }
 }

@@ -99,4 +99,9 @@ public class StudentServiceImpl implements StudentService {
 //        return Optional.ofNullable(studentRepository.findTop2ByStudentNameLike(String.format("%s%s%s","%",studentName,"%"))).orElse(Collections.emptyList());
     }
 
+    @Override
+    public List<Student> getStudentsByParams(String studentName, Integer cardId) {
+        return studentRepository.getStudentsByParams(studentName,cardId);
+    }
+
 }

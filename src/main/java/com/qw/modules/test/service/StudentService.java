@@ -28,4 +28,6 @@ public interface StudentService {
     List<Student> getStudentByStudentName(String studentName);
 
     List<Student> getStudentByStudentNameLike(String studentName);
+
+    List<Student> getStudentsByParams(String studentName, Integer cardId);
 }
