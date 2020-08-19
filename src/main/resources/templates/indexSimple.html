@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>*** Manager System</title>
 
+    <!-- 引入 内外部 css -->
+    <!-- <link th:href="@{http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css}" rel="stylesheet" > -->
+    <!-- <link th:href="${'/css/sbDemo.css'}" rel="stylesheet" /> -->
+    <link th:href="${'/pulagin/bootstrap/css/bootstrap.min.css'}" rel="stylesheet" />
+    <link th:href="${'/pulagin/font-awesome/css/font-awesome.min.css'}" rel="stylesheet" />
+    <link th:href="${'/css/custom.css'}" rel="stylesheet" />
+
+    <!-- 引入内部js -->
+    <script th:src="${'/pulagin/jquery/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="${'/pulagin/bootstrap/js/bootstrap.bundle.min.js'}" type="text/javascript"></script>
+    <!--外部弹出层 layer -->
+    <script th:src="@{https://cdn.bootcss.com/layer/2.1/layer.js}"
+            type="text/javascript"></script>
+</head>
+<body class="login">
+<div>
+    <!-- body content  内容 -->
+    <div th:if="${template}">
+        <div th:replace="${template}"></div>
+    </div>
+</div>
+
+<!-- 引入 js -->
+<script th:src="${'/js/custom.js'}" type="text/javascript"></script>
 </body>
 </html>

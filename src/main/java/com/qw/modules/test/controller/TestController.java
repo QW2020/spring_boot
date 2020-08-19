@@ -103,6 +103,14 @@ public class TestController {
     }
 
     /**
+     * 127.0.0.1/test/indexSimple    ---get
+     */
+    @GetMapping("/indexSimple")
+    public String indexSimplePage(){
+        return "indexSimple";
+    }
+
+    /**
      * 127.0.0.1/test/index    ---get
      */
     @GetMapping("/index")
