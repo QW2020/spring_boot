@@ -53,6 +53,7 @@ public class CityServiceImpl implements CityService {
     //模糊查询  分页
     @Override
     public PageInfo<City> getCitiesBySearchVo(SearchVo searchVo) {
+        //初始化  清空SearchVo以前的内容
         searchVo.initSearchVo();
         return new PageInfo<City>(Optional.ofNullable(cityDao.getCitiesBySearchVo(searchVo))
                 .orElse(Collections.emptyList()));
