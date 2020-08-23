@@ -1,12 +1,10 @@
 package com.qw.modules.account.dao;
 
+import com.qw.modules.account.pojo.Role;
 import com.qw.modules.account.pojo.User;
 import com.qw.modules.common.vo.SearchVo;
 import com.qw.modules.test.pojo.City;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,4 +49,28 @@ public interface UserDao {
             + "</choose>"
             + "</script>")
     List<User> getUsersBySearchVo(SearchVo searchVo);
+
+    //修改
+    @Update("update user set user_name = #{userName},user_img = #{userImg}" +
+            " where user_id = #{userId}")
+    void updateUser(User user);
+
+    //删除
+    @Delete("delete from user where user_id = #{userId}")
+    void deleteUser(int userId);
+
+    //多表查询
+    @Select("select * from user where user_id = #{userId}")
+    @Results(id = "userResults", value ={
+            @Result(column = "user_id",property = "userId"),
+            @Result(column = "user_id",property = "roles",
+                    javaType = List.class,
+                    many = @Many(select = "com.qw.modules.account." +
+                            "dao.RoleDao.getRolesByUserId"))})
+    User getUserByUserId(int userId);
+
+    //通过roleId连表查询users
+    @Select("select * from user u left join user_role us on " +
+            "u.user_id = us.user_id where us.role_id = #{roleId}")
+    List<User> getUsersByRoleId(int roleId);
 }

@@ -5036,4 +5036,52 @@ $(document).ready(function () {
     init_autosize();
     init_autocomplete();
 
-});	
+});
+
+"===================================="
+//模态框roles信息
+function initRoles(rolesDivId, roleElementName) {
+    $.ajax({
+        url : "/api/roles",
+        type : "get",
+        success : function (rs) {
+            //拿到roles  div
+            var rolesDiv = $("#" + rolesDivId);
+            //制空rolesDiv
+            rolesDiv.empty();
+            //遍历后端传过来的roles列表
+            $.each(rs, function(i, item) {
+                //把每一个角色装到input中
+                rolesDiv.append("<input type='checkbox' name='" + roleElementName
+                    + "' value='"+ item.roleId + "'/>" + item.roleName + " ");
+            });
+        },
+        error : function (data) {
+            layer.alert(data.responseText, {icon: 0});
+        }
+    });
+}
+
+"===================================="
+//模态框resources信息
+function initResources(resourcesDivId, resourceElementName) {
+    $.ajax({
+        url : "/api/resources",
+        type : "get",
+        success : function (rs) {
+            //拿到resources  div
+            var resourcesDiv = $("#" + resourcesDivId);
+            //制空rolesDiv
+            resourcesDiv.empty();
+            //遍历后端传过来的resources列表
+            $.each(rs, function(i, item) {
+                //把每一个角色装到input中
+                resourcesDiv.append("<input type='checkbox' name='" + resourceElementName
+                    + "' value='"+ item.resourceId + "'/>" + item.resourceName + " ");
+            });
+        },
+        error : function (data) {
+            layer.alert(data.responseText, {icon: 0});
+        }
+    });
+}

@@ -16,7 +16,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Users <small>Users list</small></h3>
+                <h3>Roles <small>Roles list</small></h3>
             </div>
         </div>
 
@@ -27,10 +27,10 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <!--让add居左   data-toggle="modal"：标识为模态框    data-target="#addUserModal"：指定目标div-->
+                        <!--让add居左   data-toggle="modal"：标识为模态框    data-target="#addRoleModal"：指定目标div-->
                         <ul class="nav navbar-right panel_toolbox" style="margin-left: 0;float: left;">
-                            <button id="addUserBtn" type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#addUserModal">Add</button>
+                            <button id="addRoleBtn" type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#addRoleModal">Add</button>
                         </ul>
 
                         <div class="clearfix"></div>
@@ -43,10 +43,8 @@
                                     <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
                                         <tr>
-                                            <th>UserId</th>
-                                            <th>UserName</th>
-                                            <th>Password</th>
-                                            <th>CreateDate</th>
+                                            <th>RoleId</th>
+                                            <th>RoleName</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -67,9 +65,9 @@
 <!-- /page content -->
 
 <!-- 引入新增模态框页面-->
-<div th:replace="account/addUser"></div>
+<div th:replace="account/addRole"></div>
 <!-- 引入修改模态框页面-->
-<div th:replace="account/updateUser"></div>
+<div th:replace="account/updateRole"></div>
 
 <!-- import js-->
 <!-- FastClick -->
@@ -96,25 +94,25 @@
     //初始显示5条数据
     var DEFAULT_PAGE_SIZE = 5;
     $(document).ready(function () {
-        initUserTable(DEFAULT_PAGE_SIZE);
+        initRoleTable(DEFAULT_PAGE_SIZE);
 
         //点击add按钮，调用initAddModal（）
-        $("#addUserBtn").bind("click", function() {
+        $("#addRoleBtn").bind("click", function() {
             initAddModal();
         });
 
-        //新增点击save changes 调用addUser（）
-        $("#insertUserBtn").bind("click",function () {
-            addUser();
+        //新增点击save changes 调用addRole（）
+        $("#insertRoleBtn").bind("click",function () {
+            addRole();
         });
 
-        //修改点击save changes 调用editUser（）
-        $("#editUserBtn").bind("click",function () {
-            editUser();
+        //修改点击save changes 调用editRole（）
+        $("#editRoleBtn").bind("click",function () {
+            editRole();
         });
     });
     //渲染table的body部分
-    function initUserTable(pageSize) {
+    function initRoleTable(pageSize) {
         //找到table调用DataTable（）方法
         $('#datatable').DataTable({
             'paging': true, //分页
@@ -143,7 +141,7 @@
                 searchVo.keyWord = data.search.value;
 
                 $.ajax({
-                    url : "/api/users",
+                    url : "/api/roles",
                     type : "post",
                     contentType: "application/json",
                     data : JSON.stringify(searchVo),
@@ -171,8 +169,7 @@
                         var gearDatas = [];
                         for (var i = 0; i < rs.list.length; i++) {
                             //包装行数据
-                            var rowData = new TData(rs.list[i].userId, rs.list[i].userName,
-                                rs.list[i].password, rs.list[i].createDate);
+                            var rowData = new TData(rs.list[i].roleId, rs.list[i].roleName);
                             // 将行数据放到数组里
                             gearDatas.push(rowData);
                         }
@@ -188,61 +185,55 @@
             },
             "columns": [ //定义行数据字段
                 //columns：每一列要展示的内容；data：返回数据的属性   sortable：是否支持排序
-                {data: 'userId', name: "user_id", sortable: true},
-                {data: 'userName', name: "user_name", sortable: true},
-                {data: 'password', name: "password", sortable: true},
-                {data: 'createDate', name: "create_date", sortable: true},
+                {data: 'roleId', name: "role_id", sortable: true},
+                {data: 'roleName', name: "role_name", sortable: true},
                 {data: 'operate', width: '80px', sortable: false}
             ]
         });
     }
     //行数据结构
-    function TData(userId, userName, password, createDate) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.createDate = createDate;
+    function TData(roleId, roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
         //operate代表每一行数据操作列
         this.operate = function () {
-            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#userEditModal' " +
-                "onclick='initEditModal(\"" + userId + "\")'>编辑</a>&nbsp;" +
-                "<a href='javascript:void(0);' onclick='deleteUser(\"" + userId + "\")' class='btn_editcolor'>删除</a>";
+            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#roleEditModal' " +
+                "onclick='initEditModal(\"" + roleId + "\")'>编辑</a>&nbsp;" +
+                "<a href='javascript:void(0);' onclick='deleteRole(\"" + roleId + "\")' class='btn_editcolor'>删除</a>";
         }
     }
 
     //打开新增模态框
     function initAddModal() {
-        $("#userNameForAddPage").val("");
-        $("#passwordForAddPage").val("");
-        //传入rolesDiv id，设置rolesDiv中input的name为roleElementForAdd
-        initRoles("rolesForAddPage", "roleElementForAdd");
+        $("#roleNameForAddPage").val("");
+        //传入resourcesDiv id，设置resourcesDiv中input的name为resourceElementForAdd
+        initResources("resourcesForAddPage", "resourceElementForAdd");
     }
 
     //绑定save changes 点击事件，新增
-    function addUser() {
-        var user = {};
-        user.userName = $("#userNameForAddPage").val();
-        user.password = $("#passwordForAddPage").val();
-        var roles = new Array();
-        //取到所有add模态框勾选的roleId
-        $.each($("input[name='roleElementForAdd']"),function () {
+    function addRole() {
+        var role = {};
+        role.roleName = $("#roleNameForAddPage").val();
+        var resources = new Array();
+        //取到所有add模态框勾选的resourceId
+        $.each($("input[name='resourceElementForAdd']"),function () {
             if (this.checked){
-                var role = {};
-                role.roleId = $(this).val();
-                roles.push(role);
+                var resource = {};
+                resource.resourceId = $(this).val();
+                resources.push(resource);
             }
         });
-        user.roles = roles;
+        role.resources = resources;
 
         $.ajax({
-            url : "/api/user",
+            url : "/api/role",
             type : "post",
             contentType: "application/json",
-            data : JSON.stringify(user),
+            data : JSON.stringify(role),
             success : function (rs) {
                 //新增成功后刷新页面
                 if (rs.status = 200){
-                    initUserTable(DEFAULT_PAGE_SIZE);
+                    initRoleTable(DEFAULT_PAGE_SIZE);
                 }else {
                     layer.alert(rs.message,{icon:0});
                 }
@@ -255,19 +246,18 @@
     }
 
     //打开修改模态框
-    function initEditModal(userId) {
-        //传入rolesDiv id，设置rolesDiv中input的name为roleElementForEdit
-        initRoles("rolesForEditPage", "roleElementForEdit");
+    function initEditModal(roleId) {
+        //传入resourcesDiv id，设置resourcesDiv中input的name为resourceElementForEdit
+        initResources("resourcesForEditPage", "resourceElementForEdit");
         $.ajax({
-            url : "/api/user/" + userId,
+            url : "/api/role/" + roleId,
             type : "get",
             success : function (rs) {
-                $("#userIdForEditPage").val(rs.userId);
-                $("#userNameForEditPage").val(rs.userName);
-                $("#userImgForEditPage").val(rs.userImg);
-                $.each(rs.roles, function(i, item){
+                $("#roleIdForEditPage").val(rs.roleId);
+                $("#roleNameForEditPage").val(rs.roleName);
+                $.each(rs.resources, function(i, item){
                     //判断后台查询到的roleId与input中的value值，如果相等则勾取
-                    $("input[name='roleElementForEdit'][value=" + item.roleId + "]")
+                    $("input[name='resourceElementForEdit'][value=" + item.resourceId + "]")
                         .attr("checked","checked");
                 });
             },
@@ -278,31 +268,30 @@
     }
 
     //绑定save changes 点击事件，修改
-    function editUser() {
-        var user = {};
-        user.userId = $("#userIdForEditPage").val();
-        user.userName = $("#userNameForEditPage").val();
-        user.userImg = $("#userImgForEditPage").val();
-        var roles = new Array();
-        //取到所有add模态框勾选的roleId
-        $.each($("input[name='roleElementForEdit']"),function () {
+    function editRole() {
+        var role = {};
+        role.roleId = $("#roleIdForEditPage").val();
+        role.roleName = $("#roleNameForEditPage").val();
+        var resources = new Array();
+        //取到所有add模态框勾选的resourceId
+        $.each($("input[name='resourceElementForEdit']"),function () {
             if (this.checked){
-                var role = {};
-                role.roleId = $(this).val();
-                roles.push(role);
+                var resource = {};
+                resource.resourceId = $(this).val();
+                resources.push(resource);
             }
         });
-        user.roles = roles;
+        role.resources = resources;
 
         $.ajax({
-            url : "/api/update",
+            url : "/api/updateRole",
             type : "put",
             contentType: "application/json",
-            data : JSON.stringify(user),
+            data : JSON.stringify(role),
             success : function (rs) {
                 //修改成功后刷新页面
                 if (rs.status = 200){
-                    initUserTable(DEFAULT_PAGE_SIZE);
+                    initRoleTable(DEFAULT_PAGE_SIZE);
                 }else {
                     layer.alert(rs.message,{icon:0});
                 }
@@ -315,16 +304,16 @@
     }
 
     //绑定点击事件，删除
-    function deleteUser(userId) {
+    function deleteRole(roleId) {
         //弹出框：是否确认  result结果为true，则调用函数
         bootbox.confirm("Are you sure?", function(result) {
             if(result) {
                 $.ajax({
-                    url : "/api/delete/" + userId,
+                    url : "/api/deleteRole/" + roleId,
                     type : "delete",
                     success : function (data) {
                         if (data.status == 200) {
-                            initUserTable(DEFAULT_PAGE_SIZE);
+                            initRoleTable(DEFAULT_PAGE_SIZE);
                         } else {
                             // window.location.href = data.object;
                             layer.msg(data.message, {icon: 0});

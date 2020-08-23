@@ -5,12 +5,10 @@ import com.qw.modules.account.pojo.User;
 import com.qw.modules.account.service.UserService;
 import com.qw.modules.common.vo.Result;
 import com.qw.modules.common.vo.SearchVo;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 
@@ -57,5 +55,33 @@ public class UserController {
     @PostMapping(value = "/users",consumes = "application/json")
     public PageInfo<User> getUsersBySearchVo(@RequestBody SearchVo searchVo){
         return userService.getUsersBySearchVo(searchVo);
+    }
+
+    /**
+     * 127.0.0.1/api/update ---- put
+     * {"userName":"qw2","userImg":"/aaa.jpg","userId":"4"}
+     * 修改
+     */
+    @PutMapping(value = "/update",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Result<User> updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+
+    /**
+     * 127.0.0.1/api/delete/x ---- delete
+     * 删除
+     */
+    @DeleteMapping("/delete/{userId}")
+    public Result<Object> deleteUser(@PathVariable int userId){
+        return userService.deleteUser(userId);
+    }
+
+    /**
+     * 127.0.0.1/api/user/1 ---- get
+     * 查询
+     */
+    @GetMapping("/user/{userId}")
+    public User getUserByUserId(@PathVariable int userId){
+        return userService.getUserByUserId(userId);
     }
 }

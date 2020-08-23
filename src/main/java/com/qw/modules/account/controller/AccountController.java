@@ -18,10 +18,28 @@ public class AccountController {
 
     /**
      * 127.0.0.1/account/users   ---- get
-     * 测试template
+     * user list 页面
      */
     @GetMapping("/users")
     public String users(){
+        return "index";
+    }
+
+    /**
+     * 127.0.0.1/account/roles   ---- get
+     * role list 页面
+     */
+    @GetMapping("/roles")
+    public String roles(){
+        return "index";
+    }
+
+    /**
+     * 127.0.0.1/account/resources   ---- get
+     * resource list 页面
+     */
+    @GetMapping("/resources")
+    public String resources(){
         return "index";
     }
 
