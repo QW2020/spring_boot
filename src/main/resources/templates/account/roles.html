@@ -207,7 +207,7 @@
     function initAddModal() {
         $("#roleNameForAddPage").val("");
         //传入resourcesDiv id，设置resourcesDiv中input的name为resourceElementForAdd
-        initResources("resourcesForAddPage", "resourceElementForAdd");
+       /* initResources("resourcesForAddPage", "resourceElementForAdd");*/
     }
 
     //绑定save changes 点击事件，新增
@@ -216,14 +216,14 @@
         role.roleName = $("#roleNameForAddPage").val();
         var resources = new Array();
         //取到所有add模态框勾选的resourceId
-        $.each($("input[name='resourceElementForAdd']"),function () {
+       /* $.each($("input[name='resourceElementForAdd']"),function () {
             if (this.checked){
                 var resource = {};
                 resource.resourceId = $(this).val();
                 resources.push(resource);
             }
         });
-        role.resources = resources;
+        role.resources = resources;*/
         $.ajax({
             url : "/api/role",
             type : "post",
@@ -247,18 +247,18 @@
     //打开修改模态框
     function initEditModal(roleId) {
         //传入resourcesDiv id，设置resourcesDiv中input的name为resourceElementForEdit
-        initResources("resourcesForEditPage", "resourceElementForEdit");
+        /*initResources("resourcesForEditPage", "resourceElementForEdit");*/
         $.ajax({
             url : "/api/role/" + roleId,
             type : "get",
             success : function (rs) {
                 $("#roleIdForEditPage").val(rs.roleId);
                 $("#roleNameForEditPage").val(rs.roleName);
-                $.each(rs.resources, function(i, item){
+                /*$.each(rs.resources, function(i, item){
                     //判断后台查询到的roleId与input中的value值，如果相等则勾取
                     $("input[name='resourceElementForEdit'][value=" + item.resourceId + "]")
                         .attr("checked","checked");
-                });
+                });*/
             },
             error : function (data) {
                 layer.alert(data.responseText, {icon: 0});
@@ -273,14 +273,14 @@
         role.roleName = $("#roleNameForEditPage").val();
         var resources = new Array();
         //取到所有add模态框勾选的resourceId
-        $.each($("input[name='resourceElementForEdit']"),function () {
+       /* $.each($("input[name='resourceElementForEdit']"),function () {
             if (this.checked){
                 var resource = {};
                 resource.resourceId = $(this).val();
                 resources.push(resource);
             }
         });
-        role.resources = resources;
+        role.resources = resources;*/
 
         $.ajax({
             url : "/api/updateRole",
