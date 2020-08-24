@@ -60,4 +60,13 @@ public class AccountController {
     public String registerPage(){
         return "indexSimple";
     }
+
+    /**
+     * 127.0.0.1/account/profile   ---- get
+     * 注册页面
+     */
+    @GetMapping("/profile")
+    public String profilePage(){
+        return "index";
+    }
 }

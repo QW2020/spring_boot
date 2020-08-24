@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.qw.modules.account.pojo.User;
 import com.qw.modules.common.vo.Result;
 import com.qw.modules.common.vo.SearchVo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * ClassName: UserService <br/>
@@ -25,4 +26,6 @@ public interface UserService {
     Result<Object> deleteUser(int userId);
 
     User getUserByUserId(int userId);
+
+    Result<String> uploadUserImg(MultipartFile file);
 }

@@ -5039,7 +5039,7 @@ $(document).ready(function () {
 });
 
 "===================================="
-//模态框roles信息
+//模态框user中的roles信息
 function initRoles(rolesDivId, roleElementName) {
     $.ajax({
         url : "/api/roles",

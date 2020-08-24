@@ -31,7 +31,7 @@ public interface ResourceDao {
 
     //多表查询resources
     @Select("select * from resource where resource_id = #{resourceId}")
-    @Results(id = "resourceResults", value ={
+    @Results(value ={
             @Result(column = "resource_id",property = "resourceId"),
             @Result(column = "resource_id",property = "roles",
                     javaType = List.class,

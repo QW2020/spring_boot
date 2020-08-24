@@ -9,8 +9,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * ClassName: UserController <br/>
@@ -83,5 +87,14 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public User getUserByUserId(@PathVariable int userId){
         return userService.getUserByUserId(userId);
+    }
+
+    /**
+     * 127.0.0.1/api/userImg  ---- post
+     * 上传单个文件
+     */
+    @PostMapping(value = "/userImg",consumes = "multipart/form-data")
+    public Result<String> uploadUserImg(@RequestParam MultipartFile file){
+        return userService.uploadUserImg(file);
     }
 }

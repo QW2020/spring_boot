@@ -2,6 +2,7 @@ package com.qw.modules.account.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qw.config.ResourceConfigBean;
 import com.qw.modules.account.dao.UserDao;
 import com.qw.modules.account.dao.UserRoleDao;
 import com.qw.modules.account.pojo.Role;
@@ -13,7 +14,11 @@ import com.qw.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserRoleDao userRoleDao;
+    @Autowired
+    private ResourceConfigBean resourceConfigBean;
 
     @Override
     @Transactional
@@ -130,5 +137,47 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(int userId) {
         return userDao.getUserByUserId(userId);
+    }
+
+    @Override
+    public Result<String> uploadUserImg(MultipartFile file) {
+        //如果为空，重新选择
+        if (file.isEmpty()){
+            return new Result<String>(
+                    Result.ResultStatus.FAILD.status,
+                    "Please select img. ");
+        }
+        //相对路径
+        String relativePath = "";
+        //本地绝对路径
+        String destFilePath = "";
+        try {
+            //拿到操作系统名字
+            String osName = System.getProperty("os.name");
+            if (osName.toLowerCase().startsWith("win")) {
+                //如果是windows系统，拿到本地路径 + 文件名
+                destFilePath = resourceConfigBean.getLocationPathForWindows()
+                        + file.getOriginalFilename();
+            } else {
+                //如果是Linux，拿到本地Linux路径 + 文件名
+                destFilePath = resourceConfigBean.getLocationPathForLinux()
+                        + file.getOriginalFilename();
+            }
+            //设置相对路径
+            relativePath = resourceConfigBean.getRelativePath() +
+                    file.getOriginalFilename();
+            //目标文件
+            File destFile = new File(destFilePath);
+            //上传到目标文件
+            file.transferTo(destFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Result<String>(
+                    Result.ResultStatus.FAILD.status,
+                    "Upload file failed.");
+        }
+        return new Result<String>(
+                Result.ResultStatus.SUCCESS.status,
+                "Upload file success.",relativePath);
     }
 }

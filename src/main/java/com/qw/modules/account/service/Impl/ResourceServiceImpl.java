@@ -49,6 +49,16 @@ public class ResourceServiceImpl implements ResourceService {
 
         //新增
         resourceDao.insertResource(resource);
+
+        //给中间表添加
+        roleResourceDao.deleteRoleResourceByResourceId(resource.getResourceId());
+        List<Role> roles = resource.getRoles();
+        if (roles!=null && !roles.isEmpty()){
+            roles.stream().forEach(item ->{
+                roleResourceDao.insertRoleResource(item.getRoleId(),resource.getResourceId());
+            });
+        }
+
         return new Result<Resource>(Result.ResultStatus.SUCCESS.status,
                 "Insert success.",resource);
     }
@@ -74,6 +84,15 @@ public class ResourceServiceImpl implements ResourceService {
         }
         //修改
         resourceDao.updateResource(resource);
+
+        //给中间表添加
+        roleResourceDao.deleteRoleResourceByResourceId(resource.getResourceId());
+        List<Role> roles = resource.getRoles();
+        if (roles!=null && !roles.isEmpty()){
+            roles.stream().forEach(item ->{
+                roleResourceDao.insertRoleResource(item.getRoleId(),resource.getResourceId());
+            });
+        }
         return new Result<Resource>(Result.ResultStatus.SUCCESS.status,
                 "Update resource success.",resource);
     }

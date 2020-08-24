@@ -45,7 +45,7 @@
                                         <tr>
                                             <th>ResourceId</th>
                                             <th>ResourceName</th>
-                                            <th>resourceUri</th>
+                                            <th>ResourceUri</th>
                                             <th>permission</th>
                                             <th>Operation</th>
                                         </tr>
@@ -172,7 +172,7 @@
                         for (var i = 0; i < rs.list.length; i++) {
                             //包装行数据
                             var rowData = new TData(rs.list[i].resourceId, rs.list[i]
-                                .resourceName, rs.list[i].resourceUri, rs.list[i].permission);
+                                .resourceName, rs.list[i].resourceUri,rs.list[i].permission);
                             // 将行数据放到数组里
                             gearDatas.push(rowData);
                         }
@@ -215,6 +215,7 @@
         $("#resourceNameForAddPage").val("");
         $("#resourceUriForAddPage").val("");
         $("#permissionForAddPage").val("");
+        initRoles("rolesForAddPage", "roleElementForAdd");
     }
 
     //绑定save changes 点击事件，新增
@@ -223,6 +224,16 @@
         resource.resourceName = $("#resourceNameForAddPage").val();
         resource.resourceUri = $("#resourceUriForAddPage").val();
         resource.permission = $("#permissionForAddPage").val();
+        var roles = new Array();
+        //取到所有add模态框勾选的roleId
+        $.each($("input[name='roleElementForAdd']"),function () {
+            if (this.checked){
+                var role = {};
+                role.roleId = $(this).val();
+                roles.push(role);
+            }
+        });
+        resource.roles = roles;
 
         $.ajax({
             url : "/api/resource",
@@ -246,6 +257,8 @@
 
     //打开修改模态框
     function initEditModal(resourceId) {
+        //传入rolesDiv id，设置rolesDiv中input的name为roleElementForEdit
+        initRoles("rolesForEditPage", "roleElementForEdit");
         $.ajax({
             url : "/api/resource/" + resourceId,
             type : "get",
@@ -254,6 +267,12 @@
                 $("#resourceNameForEditPage").val(rs.resourceName);
                 $("#resourceUriForEditPage").val(rs.resourceUri);
                 $("#permissionForEditPage").val(rs.permission);
+                $.each(rs.roles, function(i, item){
+                    //判断后台查询到的roleId与input中的value值，如果相等则勾取
+                    $("input[name='roleElementForEdit'][value=" + item.roleId + "]")
+                        .attr("checked","checked");
+                    console.log(item.roleId);
+                });
             },
             error : function (data) {
                 layer.alert(data.responseText, {icon: 0});
@@ -267,7 +286,17 @@
         resource.resourceId = $("#resourceIdForEditPage").val();
         resource.resourceName = $("#resourceNameForEditPage").val();
         resource.resourceUri = $("#resourceUriForEditPage").val();
-        resource.permission = $("#permissionForAddPage").val();
+        resource.permission = $("#permissionForEditPage").val();
+        var roles = new Array();
+        //取到所有add模态框勾选的roleId
+        $.each($("input[name='roleElementForEdit']"),function () {
+            if (this.checked){
+                var role = {};
+                role.roleId = $(this).val();
+                roles.push(role);
+            }
+        });
+        resource.roles = roles;
 
         $.ajax({
             url : "/api/updateResource",

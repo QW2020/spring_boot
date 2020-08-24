@@ -99,7 +99,6 @@ public class RoleServiceImpl implements RoleService {
                 roleResourceDao.insertRoleResource(role.getRoleId(),item.getResourceId());
             });
         }
-
         return new Result<Role>(Result.ResultStatus.SUCCESS.status,
                 "Update role success.",role);
     }

@@ -28,7 +28,7 @@ public interface RoleDao {
     //通过resourceId连表查询Roles
     @Select("select * from role r left join role_resource rr " +
             "on r.role_id = rr.role_id where rr.resource_id = #{resourceId} ")
-    List<Resource> getRolesByResourceId(int resourceId);
+    List<Role> getRolesByResourceId(int resourceId);
 
     //查询所有角色
     @Select("select * from role")

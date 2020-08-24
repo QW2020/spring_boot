@@ -28,4 +28,5 @@ public interface RoleResourceDao {
     //删除中间表关联数据
     @Delete("delete from role_resource where resource_id = #{resourceId}")
     void deleteRoleResourceByResourceId(int resourceId);
+
 }
