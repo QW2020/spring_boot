@@ -11,6 +11,10 @@ import com.qw.modules.account.service.UserService;
 import com.qw.modules.common.vo.Result;
 import com.qw.modules.common.vo.SearchVo;
 import com.qw.utils.MD5Util;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,15 +79,38 @@ public class UserServiceImpl implements UserService {
     @Override
     //登录   用户名、密码 比对
     public Result<User> login(User user) {
-        //用户存在，判断密码是否相等
+        Subject subject = SecurityUtils.getSubject();
+
+        //包装令牌，前端用户名、密码、包括记住我之类的标签
+        UsernamePasswordToken usernamePasswordToken  =
+                new UsernamePasswordToken(user.getUserName()
+                        ,MD5Util.getMD5(user.getPassword()));
+        usernamePasswordToken.setRememberMe(user.getRememberMe());
+
+        try {
+            //去MyRealm里面进行 身份验证
+            subject.login(usernamePasswordToken);
+            //授权
+            subject.checkRoles();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<User>(Result.ResultStatus.FAILD.status,
+                    "UserName or password is error.");
+        }
+
+        Session session = subject.getSession();
+        session.setAttribute("user",(User)subject.getPrincipal());
+
+        /*//用户存在，判断密码是否相等
         User user1 = userDao.getUserByUserName(user.getUserName());
         if (user1 != null &&
                 user1.getPassword().equals(MD5Util.getMD5(user.getPassword()))){
             return new Result<User>(Result.ResultStatus.SUCCESS.status,
                     "Success.",user1);
-        }
-        return new Result<User>(Result.ResultStatus.FAILD.status,
-                "UserName or password is error.");
+        }*/
+
+        return new Result<User>(Result.ResultStatus.SUCCESS.status,
+                "Login success.",user);
     }
 
     //模糊查询  分页
@@ -179,5 +206,21 @@ public class UserServiceImpl implements UserService {
         return new Result<String>(
                 Result.ResultStatus.SUCCESS.status,
                 "Upload file success.",relativePath);
+    }
+
+    @Override
+    //通过用户名查询
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
+    }
+
+    @Override
+    //登出
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        //清除Session信息
+        Session session = subject.getSession();
+        session.setAttribute("user",null);
     }
 }

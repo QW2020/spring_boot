@@ -29,6 +29,7 @@ public interface UserDao {
 
     //通过name查询
     @Select("select * from user where user_name = #{userName}")
+    @ResultMap(value = "userResults")
     User getUserByUserName(String userName);
 
     //模糊查询

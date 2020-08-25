@@ -6,6 +6,7 @@ import com.qw.modules.account.service.UserService;
 import com.qw.modules.common.vo.Result;
 import com.qw.modules.common.vo.SearchVo;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,7 @@ public class UserController {
      * 删除
      */
     @DeleteMapping("/delete/{userId}")
+    @RequiresPermissions(value = "/api/deleteUser/")
     public Result<Object> deleteUser(@PathVariable int userId){
         return userService.deleteUser(userId);
     }
@@ -94,7 +96,9 @@ public class UserController {
      * 上传单个文件
      */
     @PostMapping(value = "/userImg",consumes = "multipart/form-data")
-    public Result<String> uploadUserImg(@RequestParam MultipartFile file){
+    public Result<String> uploadUserImg(@RequestParam MultipartFile file)
+    {
         return userService.uploadUserImg(file);
     }
+
 }
