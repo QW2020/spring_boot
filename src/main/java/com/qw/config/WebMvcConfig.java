@@ -84,9 +84,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         }
     }
 
-    //登录欢迎页面
-    /*@Override
+    //欢迎页面   http://127.0.0.1/
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("wellcome");
-    }*/
+    }
 }
