@@ -420,7 +420,7 @@
         }).on('fileuploaded', function (event, data) {//文件上传回调函数
             if (data.response.status == 200) {
                 $("#userImg").val(data.response.object);//上传成功后将 相对path路径 设置到上传文件模态框中 User Image隐藏框内
-                // $('#uploadPicture').fileinput('disable');
+                // $('#uploadPicture').fileinput('disable');禁止上传
             } else {
                 $(".fileinput-remove-button").click()//上传失败后移除
             }

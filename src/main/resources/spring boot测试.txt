@@ -1,0 +1,115 @@
+一、选择题（共12小题，每小题2.5分，共30分）
+	以下不是spring boot优点的是 ( D )
+		A．快速搭建项目
+		B．简化配置  
+		C．自动配置  
+		D．无需容器
+	Spring Boot配置，以下哪个优先级最高（B ）
+		A、外置：xx.jar同目录下/config/application.properties；
+		B、外置：xx.jar同目录下/config/application.yml；
+		C、内置：src/main/resources/config；
+		D、内置：src/main/resources
+	以下log日志级别哪个最高（D）
+		A、DEBUG
+		B、INFO
+		C、WARN
+		D、ERROR
+	以下不是spring boot的核心注解的是 ( B )
+		A.	@SpringBootConfiguration
+		B.	@EnableAutoConfiguration
+		C.	@ComponentScan
+		D.	@MapperScan
+	要使用springMVC的功能，需要导入那个包 ( C  )
+		A．spring-boot-starter-jdbc  
+		B．spring-boot-starter-thymeleaf  
+		C．spring-boot-starter-web  
+		D．mybatis-spring-boot-starter
+	以下哪个注解不能加在类上 ( B )
+		A.	@Controller
+		B.	@ResponseBody
+		C.	@RestController
+		D.	@RequestMapping
+	当控制层上有@RestController注解时，方法中返回一个字符串“<h1>Hello</h1>”，浏览器调用的结果是 ( C  )
+		A. 一级标题显示的Hello
+		B.	找不到Hello.html
+		C.	<h1>Hello</>
+		D.	Hello
+	SpringBoot项目中配置文件的格式 ( C )
+		A．properties  
+		B．yml  
+		C．两者都可以
+	不是SpringBoot核心配置文件是（C）
+		A.	bootstrap
+		B.	application
+		C.	application-dev
+	前台使用json参数格式，控制器consumer、参数使用的注解是（A）
+		A、application/josn ---- @RequestBody
+		B、application/josn ---- @ModelAttribute
+		C、application/x-www-form-urlencoded ---- @RequestBody
+		D、application/x-www-form-urlencoded ---- @ModelAttribute
+	@Pointcut("execution(public * com.thornBird.sbd.modules.*.controller.*.*(..))")，第三个*代表（D）
+		A、代表返回类型不限
+		B、代表module下所有子包
+		C、代表所有类
+		D、代表所有方法
+	Url匹配风格中/admin*，以下哪个匹配不正确（D）
+		A、/admin
+		B、/admin1
+		C、/admin123
+		D、/admin/1
+	Mybatis框架中，插入数据使用那个注解（B）
+		A、@Update
+		B、@Insert
+		C、@Select
+		D、@InsertMapping
+
+二、填空题（共5小题，每小题5分，共25分）
+	获取配置文件的属性值，使用哪个注解_____@Value___________；
+	Java配置依赖的2个注解是__@Confirguration________，___@Bean________;
+	Spring Boot修改tomcat端口号为9090应该怎么写？____在application.propertie中配置 server.port=9090________;
+	自定义拦截器需要实现____HandlerInterceptor____接口；
+	过滤器需要使用___@WebFilter______注解;
+	上传文件，使用_@RequestParam___接收文件对象，consumer使用__”multipart/from-data”___;
+
+三、问答题（每题5分，共25分）
+	阐述 Spring Boot 特性，举一个例子来解释 Staters 的内容；
+springboot有两大特性：
+1.以starter形式按组类聚了多个jar包形成的单条依赖
+2.版本控制由父类控制，但不是全部的，在引入的jar包的情况下自动寻找子类的版本
+例子：
+    引入spring-web jar
+		1. 引入spring基础的核心包 上写文spring context即ioc容器、spring beans、spring core、spring expression、spring AOP
+		2. spring web方面的核心包spring webmvc：包含了springMVC框架相关的所有类
+		3. 引入新的log日志系统logback
+		4. 引入hibernate
+		5. jackson的处理包
+	Mybatis传参中，#{*}、${*}的区别？
+#{*}传入的值会加上引号
+${*}是以字符串拼接的方式传入，容易造成sql注入，在使用排序的时候用到
+	简述Restful规则？
+1.总是使用https协议
+2.常用get、post、put、delete
+3.路径后面跟名词
+4.尽量将api部署在专用域名下
+
+	简述Git使用流程，写几个常用Git命令？
+git status 查看状态
+git add 上传的内容
+git commit -m 上传到本地
+git push origin master 上传到远程
+	
+
+　　简述shiro两大功能实现流程；
+　　1.身份验证，首先在serviceImpl层把用户名和密码包装成令牌类，然后调用login（）方法进入到自定义Realm类中与身份验证器中包装的用户名和密码进行比对
+　　2.授权，首先在serviceImpl层把用户名和密码包装成令牌类，然后调用checkRoles（）方法进入到自定义Realm类中，将查询到的角色信息装到资源授权器，将查询到的资源装到资源授权器中，自定义需要匹配的字段，然后在方法上面加上注解
+
+四、编程题（每题10分，共20分）
+	1、提供一个接口，返回 List<User> 列表，对该列表进行排序、保留10条数据；页面端使用 ajax post 方式提交请求，包装查询参数，获取接口返回数据，并遍历数据渲染到页面上 table 表格中；
+
+controller方法注解@PostMapping
+Consumes = “application/json”
+接受数据@Requestbody
+Public PageInfo<User> select(@Requestbody SearhVo searchVo){}	
+@SeLect(“select * from user where user_name = keyWord order by user_id”)
+List<User> select(SearhVo searchVo);
+2、设计一套购物车接口，以 Cookie 或者 redis 实现

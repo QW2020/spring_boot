@@ -72,7 +72,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //拿到操作系统名字
         String osName = System.getProperty("os.name");
         if (osName.startsWith("win")) {
-            //如果是windows系统，拿到相对路径 加上本地路径
+            //如果是windows系统，拿到url请求相对路径 加上本地路径
             registry.addResourceHandler(resourceConfigBean.getRelativePathPattern())
                     .addResourceLocations(ResourceUtils.FILE_URL_PREFIX +
                             resourceConfigBean.getLocationPathForWindows());

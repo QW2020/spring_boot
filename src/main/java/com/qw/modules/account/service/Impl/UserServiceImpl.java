@@ -166,6 +166,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByUserId(userId);
     }
 
+    //上传文件
     @Override
     public Result<String> uploadUserImg(MultipartFile file) {
         //如果为空，重新选择
