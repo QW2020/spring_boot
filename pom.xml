@@ -2,6 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!--依赖于父项目spring-boot-starter，用于管理spring boot中所有的依赖版本
+        所以导入依赖默认不需要版本号，除非不属于他管理-->
+    <!--spring-boot-starter：spring boot场景启动器，
+        帮我们导入了web模块正常运行的组件-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>

@@ -43,7 +43,7 @@ public class UserController {
     }
 
     /**
-     * n 127.0.0.1/api/logi --- post
+     *  127.0.0.1/api/login --- post
      * {"userName":"admin","password":"111"}
      * 登录
      */

@@ -52,7 +52,7 @@ public class RequestViewInterceptor implements HandlerInterceptor {
                 path = path.substring(1);
             }
             modelAndView.getModelMap().addAttribute("template",path.toLowerCase());
-        }
+    }
         HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

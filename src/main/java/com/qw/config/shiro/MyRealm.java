@@ -67,7 +67,7 @@ public class MyRealm extends AuthorizingRealm {
         if (user == null){
             throw new UnknownAccountException("The account do not exist.");
         }
-        //身份验证器：返回包装的对象 User,数据库密码，name
+        //身份验证器：包装的对象 User,数据库密码，name
         return new SimpleAuthenticationInfo(user,user.getPassword(), getName());
     }
 }
